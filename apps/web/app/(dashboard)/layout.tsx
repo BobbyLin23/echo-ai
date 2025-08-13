@@ -2,7 +2,10 @@ import React from 'react'
 
 import { cookies } from 'next/headers'
 
-import { SidebarProvider } from '@workspace/ui/components/sidebar'
+import {
+	SIDEBAR_COOKIE_NAME,
+	SidebarProvider,
+} from '@workspace/ui/components/sidebar'
 
 import { AuthGuard } from '@/components/auth/auth-guard'
 import { OrganizationGuard } from '@/components/auth/organization-guard'
@@ -15,7 +18,7 @@ export default async function Layout({
 }) {
 	const cookieStore = await cookies()
 
-	const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true'
+	const defaultOpen = cookieStore.get(SIDEBAR_COOKIE_NAME)?.value === 'true'
 
 	return (
 		<AuthGuard>
