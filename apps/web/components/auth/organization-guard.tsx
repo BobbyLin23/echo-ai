@@ -4,8 +4,8 @@ import React from 'react'
 
 import { useOrganization } from '@clerk/nextjs'
 
-import { AuthLayout } from '@/features/auth/components/auth-layout'
-import { OrgSelectView } from '@/features/auth/components/org-select-view'
+import { AuthLayout } from '@/components/auth/auth-layout'
+import { OrgSelectView } from '@/components/auth/org-select-view'
 
 export const OrganizationGuard = ({
 	children,

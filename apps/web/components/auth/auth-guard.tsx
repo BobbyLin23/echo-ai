@@ -5,7 +5,7 @@ import React from 'react'
 import { SignIn } from '@clerk/nextjs'
 import { Authenticated, AuthLoading, Unauthenticated } from 'convex/react'
 
-import { AuthLayout } from '@/features/auth/components/auth-layout'
+import { AuthLayout } from '@/components/auth/auth-layout'
 
 export const AuthGuard = ({
 	children,

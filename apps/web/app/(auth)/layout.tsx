@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { AuthLayout } from '@/features/auth/components/auth-layout'
+import { AuthLayout } from '@/components/auth/auth-layout'
 
 export default function Layout({
 	children,
