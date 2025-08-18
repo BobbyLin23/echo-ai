@@ -6,11 +6,7 @@ import { AlertTriangleIcon } from 'lucide-react'
 import { errorMessageAtom } from '@/atoms/widget-atoms'
 import { WidgetHeader } from '@/components/widget/widget-header'
 
-export const WidgetErrorScreen = ({
-	organizationId,
-}: {
-	organizationId: string
-}) => {
+export const WidgetErrorScreen = () => {
 	const errorMessage = useAtomValue(errorMessageAtom)
 
 	return (
@@ -21,7 +17,7 @@ export const WidgetErrorScreen = ({
 					<p className="text-lg">Let&apos; get started</p>
 				</div>
 			</WidgetHeader>
-			<div className="flex flex-1 flex-col items-center justify-center gap-y-4 p-4">
+			<div className="flex flex-1 flex-col items-center justify-center gap-y-4 p-4 text-muted-foreground">
 				<AlertTriangleIcon />
 				<p className="text-sm">{errorMessage || 'Invalid Message'}</p>
 			</div>
