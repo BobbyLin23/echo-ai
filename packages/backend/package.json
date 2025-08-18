@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "convex": "^1.25.4",
-    "openai": "^5.12.2"
+    "openai": "^5.12.2",
+    "@clerk/backend": "^2.9.1"
   },
   "devDependencies": {
     "@workspace/typescript-config": "workspace:*",
