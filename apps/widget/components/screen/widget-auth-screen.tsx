@@ -21,6 +21,7 @@ import { z } from 'zod/v3'
 import {
 	contactSessionIdAtomFamily,
 	organizationIdAtom,
+	screenAtom,
 } from '@/atoms/widget-atoms'
 import { WidgetHeader } from '@/components/widget/widget-header'
 
@@ -31,6 +32,7 @@ const formSchema = z.object({
 
 export const WidgetAuthScreen = () => {
 	const organizationId = useAtomValue(organizationIdAtom)
+	const setScreen = useSetAtom(screenAtom)
 
 	const setContactSessionId = useSetAtom(
 		contactSessionIdAtomFamily(organizationId || ''),
@@ -73,6 +75,7 @@ export const WidgetAuthScreen = () => {
 		})
 
 		setContactSessionId(contactSessionId)
+		setScreen('selection')
 	}
 
 	return (

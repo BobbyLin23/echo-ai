@@ -5,7 +5,7 @@ import { atomFamily, atomWithStorage } from 'jotai/utils'
 import { CONTACT_SESSION_KEY } from '@/constants'
 import { WidgetScreen } from '@/types'
 
-export const screenAtom = atom<WidgetScreen>('auth')
+export const screenAtom = atom<WidgetScreen>('loading')
 export const organizationIdAtom = atom<string | null>(null)
 
 export const contactSessionIdAtomFamily = atomFamily((organizationId: string) =>
