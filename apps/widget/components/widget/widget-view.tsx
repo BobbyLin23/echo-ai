@@ -6,6 +6,7 @@ import { screenAtom } from '@/atoms/widget-atoms'
 import { WidgetAuthScreen } from '@/components/screen/widget-auth-screen'
 import { WidgetChatScreen } from '@/components/screen/widget-chat-screen'
 import { WidgetErrorScreen } from '@/components/screen/widget-error-screen'
+import { WidgetInboxScreen } from '@/components/screen/widget-inbox-screen'
 import { WidgetLoadingScreen } from '@/components/screen/widget-loading-screen'
 import { WidgetSelectionScreen } from '@/components/screen/widget-selection-screen'
 
@@ -21,7 +22,7 @@ export const WidgetView = ({ organizationId }: Props) => {
 		loading: <WidgetLoadingScreen organizationId={organizationId} />,
 		auth: <WidgetAuthScreen />,
 		voice: <p>TODO</p>,
-		inbox: <p>TODO</p>,
+		inbox: <WidgetInboxScreen />,
 		selection: <WidgetSelectionScreen />,
 		chat: <WidgetChatScreen />,
 		contact: <p>TODO</p>,

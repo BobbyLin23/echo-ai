@@ -15,6 +15,7 @@ import {
 	organizationIdAtom,
 	screenAtom,
 } from '@/atoms/widget-atoms'
+import { WidgetFooter } from '@/components/widget/widget-footer'
 import { WidgetHeader } from '@/components/widget/widget-header'
 
 export const WidgetSelectionScreen = () => {
@@ -80,6 +81,7 @@ export const WidgetSelectionScreen = () => {
 					<ChevronRightIcon />
 				</Button>
 			</div>
+			<WidgetFooter />
 		</>
 	)
 }
