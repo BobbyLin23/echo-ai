@@ -1,4 +1,4 @@
-import { cn } from '@workspace/ui/lib/utils.js'
+import { cn } from '@workspace/ui/lib/utils'
 import { ArrowRightIcon, ArrowUpIcon, CheckIcon } from 'lucide-react'
 
 interface ConversationStatusIconProps {
