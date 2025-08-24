@@ -6,6 +6,7 @@ import {
 	SIDEBAR_COOKIE_NAME,
 	SidebarProvider,
 } from '@workspace/ui/components/sidebar'
+import { Provider } from 'jotai'
 
 import { AuthGuard } from '@/components/auth/auth-guard'
 import { OrganizationGuard } from '@/components/auth/organization-guard'
@@ -23,10 +24,12 @@ export default async function Layout({
 	return (
 		<AuthGuard>
 			<OrganizationGuard>
-				<SidebarProvider defaultOpen={defaultOpen}>
-					<DashboardSidebar />
-					<main className="flex-1 flex flex-col">{children}</main>
-				</SidebarProvider>
+				<Provider>
+					<SidebarProvider defaultOpen={defaultOpen}>
+						<DashboardSidebar />
+						<main className="flex-1 flex flex-col">{children}</main>
+					</SidebarProvider>
+				</Provider>
 			</OrganizationGuard>
 		</AuthGuard>
 	)

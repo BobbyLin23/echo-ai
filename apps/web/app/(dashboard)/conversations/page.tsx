@@ -1,3 +1,5 @@
+import { ConversationsView } from '@/components/dashboard/conversations-view'
+
 export default function Page() {
-	return <div>123</div>
+	return <ConversationsView />
 }
