@@ -1,3 +1,5 @@
+import { FilesView } from '@/components/files/view'
+
 export default function Page() {
-	return <div>Files</div>
+	return <FilesView />
 }
