@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai'
+import { createOpenAI } from '@ai-sdk/openai'
 import { generateText } from 'ai'
 import { assert } from 'convex-helpers'
 import { StorageActionWriter } from 'convex/server'
@@ -6,9 +6,15 @@ import { StorageActionWriter } from 'convex/server'
 import { Id } from '../_generated/dataModel'
 
 const AI_MODELS = {
-	image: openai.chat('gpt-4o-mini'),
-	pdf: openai.chat('gpt-4o'),
-	html: openai.chat('gpt-4o'),
+	image: createOpenAI({
+		baseURL: 'https://openrouter.ai/api/v1',
+	}).chat('gpt-4o-mini'),
+	pdf: createOpenAI({
+		baseURL: 'https://openrouter.ai/api/v1',
+	}).chat('gpt-4o'),
+	html: createOpenAI({
+		baseURL: 'https://openrouter.ai/api/v1',
+	}).chat('gpt-4o'),
 } as const
 
 const SUPPORTED_IMAGE_TYPES = [
@@ -52,7 +58,7 @@ export const extractTextContent = async (
 		return extractPdfText(url, mimeType, filename)
 	}
 
-	if (mimeType.toLowerCase().includes('txt')) {
+	if (mimeType.toLowerCase().includes('text')) {
 		return extractTextFileContent(ctx, storageId, bytes, mimeType)
 	}
 

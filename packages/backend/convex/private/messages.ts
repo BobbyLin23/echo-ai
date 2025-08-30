@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai'
+import { createOpenAI } from '@ai-sdk/openai'
 import { saveMessage } from '@convex-dev/agent'
 import { generateText } from 'ai'
 import { paginationOptsValidator } from 'convex/server'
@@ -32,7 +32,9 @@ export const enhanceResponse = action({
 		}
 
 		const response = await generateText({
-			model: openai('gpt-4o-mini'),
+			model: createOpenAI({
+				baseURL: 'https://openrouter.ai/api/v1',
+			}).chat('gpt-4o-mini'),
 			messages: [
 				{
 					role: 'system',
