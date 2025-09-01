@@ -29,6 +29,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Feature, PluginCard } from '@/components/plugins/plugin-card'
+import { VapiConnectView } from '@/components/plugins/vapi-connect-view'
 
 const vapiFeatures: Feature[] = [
 	{
@@ -156,6 +157,47 @@ const VapiPluginForm = ({
 	)
 }
 
+const VapiPluginRemoveForm = ({
+	open,
+	setOpen,
+}: {
+	open: boolean
+	setOpen: (value: boolean) => void
+}) => {
+	const removePlugin = useMutation(api.private.plugins.remove)
+
+	const onSubmit = async () => {
+		try {
+			await removePlugin({
+				service: 'vapi',
+			})
+			setOpen(false)
+			toast.success('Vapi plugin removed')
+		} catch (error) {
+			console.error(error)
+			toast.error('Something went wrong')
+		}
+	}
+
+	return (
+		<Dialog onOpenChange={setOpen} open={open}>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Disconnect Vapi</DialogTitle>
+					<DialogDescription>
+						Are you sure you want to disconnect the Vapi plugin?
+					</DialogDescription>
+					<DialogFooter>
+						<Button onClick={onSubmit} variant="destructive">
+							Disconnect
+						</Button>
+					</DialogFooter>
+				</DialogHeader>
+			</DialogContent>
+		</Dialog>
+	)
+}
+
 export const VapiView = () => {
 	const vapiPlugin = useQuery(api.private.plugins.getOne, {
 		service: 'vapi',
@@ -164,7 +206,7 @@ export const VapiView = () => {
 	const [connectOpen, setConnectOpen] = useState(false)
 	const [removeOpen, setRemoveOpen] = useState(false)
 
-	const handleSubmit = () => {
+	const toggleConnection = () => {
 		if (vapiPlugin) {
 			setRemoveOpen(true)
 		} else {
@@ -175,6 +217,7 @@ export const VapiView = () => {
 	return (
 		<>
 			<VapiPluginForm open={connectOpen} setOpen={setConnectOpen} />
+			<VapiPluginRemoveForm open={removeOpen} setOpen={setRemoveOpen} />
 			<div className="flex min-h-screen flex-col bg-muted p-8">
 				<div className="mx-auto w-full max-w-screen-md">
 					<div className="space-y-2">
@@ -185,13 +228,13 @@ export const VapiView = () => {
 					</div>
 					<div className="mt-8">
 						{vapiPlugin ? (
-							<p>Connected!!</p>
+							<VapiConnectView onDisconnect={toggleConnection} />
 						) : (
 							<PluginCard
 								serviceName="Vapi"
 								serviceImage="/vapi.jpg"
 								features={vapiFeatures}
-								onSubmit={handleSubmit}
+								onSubmit={toggleConnection}
 								isDisabled={vapiPlugin === undefined}
 							/>
 						)}
