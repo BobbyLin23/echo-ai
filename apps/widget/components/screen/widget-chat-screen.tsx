@@ -1,11 +1,11 @@
 'use client'
 
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { toUIMessages, useThreadMessages } from '@convex-dev/agent/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from '@workspace/backend/_generated/api'
-import '@workspace/ui/components/ai/conversation'
 import {
 	AIConversation,
 	AIConversationContent,
@@ -22,6 +22,10 @@ import {
 	AIMessageContent,
 } from '@workspace/ui/components/ai/message'
 import { AIResponse } from '@workspace/ui/components/ai/response'
+import {
+	AISuggestion,
+	AISuggestions,
+} from '@workspace/ui/components/ai/suggestion'
 import { Button } from '@workspace/ui/components/button'
 import { DicebearAvatar } from '@workspace/ui/components/dicebear-avatar'
 import { Form, FormField } from '@workspace/ui/components/form'
@@ -37,6 +41,7 @@ import {
 	conversationIdAtom,
 	organizationIdAtom,
 	screenAtom,
+	widgetSettingsAtom,
 } from '@/atoms/widget-atoms'
 import { WidgetHeader } from '@/components/widget/widget-header'
 
@@ -48,6 +53,7 @@ export const WidgetChatScreen = () => {
 	const setScreen = useSetAtom(screenAtom)
 	const setConversationId = useSetAtom(conversationIdAtom)
 
+	const widgetSettings = useAtomValue(widgetSettingsAtom)
 	const conversationId = useAtomValue(conversationIdAtom)
 	const organizationId = useAtomValue(organizationIdAtom)
 	const contactSessionId = useAtomValue(
@@ -58,6 +64,16 @@ export const WidgetChatScreen = () => {
 		setConversationId(null)
 		setScreen('selection')
 	}
+
+	const suggestions = useMemo(() => {
+		if (!widgetSettings) return []
+
+		return Object.keys(widgetSettings.defaultSuggestions || {}).map((key) => {
+			return widgetSettings.defaultSuggestions[
+				key as keyof typeof widgetSettings.defaultSuggestions
+			]
+		})
+	}, [widgetSettings])
 
 	const conversation = useQuery(
 		api.public.conversations.getOne,
@@ -149,6 +165,28 @@ export const WidgetChatScreen = () => {
 					})}
 				</AIConversationContent>
 			</AIConversation>
+			{toUIMessages(messages.results ?? [])?.length === 1 && (
+				<AISuggestions>
+					{suggestions.map((suggestion) => {
+						if (!suggestion) return null
+						return (
+							<AISuggestion
+								key={suggestion}
+								suggestion={suggestion}
+								onClick={() => {
+									form.setValue('message', suggestion, {
+										shouldValidate: true,
+										shouldDirty: true,
+										shouldTouch: true,
+									})
+									form.handleSubmit(onSubmit)()
+								}}
+							/>
+						)
+					})}
+				</AISuggestions>
+			)}
+
 			<Form {...form}>
 				<AIInput
 					className="rounded-none border-x-0 border-b-0"

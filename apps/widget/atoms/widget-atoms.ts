@@ -1,4 +1,4 @@
-import { Id } from '@workspace/backend/_generated/dataModel'
+import { Doc, Id } from '@workspace/backend/_generated/dataModel'
 import { atom } from 'jotai'
 import { atomFamily, atomWithStorage } from 'jotai/utils'
 
@@ -18,3 +18,8 @@ export const contactSessionIdAtomFamily = atomFamily((organizationId: string) =>
 export const errorMessageAtom = atom<string | null>(null)
 export const loadingMessageAtom = atom<string | null>(null)
 export const conversationIdAtom = atom<Id<'conversations'> | null>(null)
+
+export const widgetSettingsAtom = atom<Omit<
+	Doc<'widgetSettings'>,
+	'organizationId'
+> | null>(null)

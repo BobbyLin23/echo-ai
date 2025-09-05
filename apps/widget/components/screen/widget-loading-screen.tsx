@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 import { api } from '@workspace/backend/_generated/api'
-import { useAction, useMutation } from 'convex/react'
+import { useAction, useMutation, useQuery } from 'convex/react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { LoaderIcon } from 'lucide-react'
 
@@ -13,6 +13,7 @@ import {
 	loadingMessageAtom,
 	organizationIdAtom,
 	screenAtom,
+	widgetSettingsAtom,
 } from '@/atoms/widget-atoms'
 import { WidgetHeader } from '@/components/widget/widget-header'
 
@@ -27,6 +28,7 @@ export const WidgetLoadingScreen = ({
 	const [sessionValid, setSessionValid] = useState<boolean>(false)
 
 	const loadingMessage = useAtomValue(loadingMessageAtom)
+	const setWidgetSettings = useSetAtom(widgetSettingsAtom)
 	const setOrganizationId = useSetAtom(organizationIdAtom)
 	const setErrorMessage = useSetAtom(errorMessageAtom)
 	const setLoadingMessage = useSetAtom(loadingMessageAtom)
@@ -87,7 +89,7 @@ export const WidgetLoadingScreen = ({
 
 		if (!contactSessionId) {
 			setSessionValid(false)
-			setStep('done')
+			setStep('settings')
 			return
 		}
 
@@ -98,13 +100,35 @@ export const WidgetLoadingScreen = ({
 		})
 			.then((result) => {
 				setSessionValid(result.valid)
-				setStep('done')
+				setStep('settings')
 			})
 			.catch(() => {
 				setSessionValid(false)
 				setStep('settings')
 			})
 	}, [step, contactSessionId, validateContactSession, setLoadingMessage])
+
+	const widgetSettings = useQuery(
+		api.public.widgetSettings.getByOrganizationId,
+		organizationId
+			? {
+					organizationId,
+				}
+			: 'skip',
+	)
+
+	useEffect(() => {
+		if (step !== 'settings') {
+			return
+		}
+
+		setLoadingMessage('Loading settings ...')
+
+		if (widgetSettings !== undefined) {
+			setWidgetSettings(widgetSettings)
+			setStep('done')
+		}
+	}, [step, widgetSettings, setWidgetSettings, setLoadingMessage, setStep])
 
 	useEffect(() => {
 		if (step !== 'done') {
