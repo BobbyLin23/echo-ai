@@ -23,3 +23,7 @@ export const widgetSettingsAtom = atom<Omit<
 	Doc<'widgetSettings'>,
 	'organizationId'
 > | null>(null)
+export const vapiSecretsAtom = atom<{
+	publicApiKey: string
+} | null>(null)
+export const hasVapiSecretsAtom = atom((get) => get(vapiSecretsAtom) !== null)
